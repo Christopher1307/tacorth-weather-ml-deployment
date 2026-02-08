@@ -49,8 +49,5 @@ uvicorn app.main:app --reload
   - `DATABRICKS_HOST=...`
   - `DATABRICKS_TOKEN=...`
 
-## 4) Cliente simple (Gradio)
-```bash
-export API_URL="https://<tu-app>.onrender.com"
-python gradio_client.py
-```
+## 4) Cliente frontend 
+http://localhost:5173/
