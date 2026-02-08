@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/Chris/Downloads/ETAPA6_FastAPI_MLflow_Render_Tacorth/mlruns/429690843168573320/7cede12bb7c444eeba2cdd3e6845fa46/artifacts
+end_time: 1770570404603
+entry_point_name: ''
+experiment_id: '429690843168573320'
+lifecycle_stage: active
+run_id: 7cede12bb7c444eeba2cdd3e6845fa46
+run_name: LinearRegression_Tacorth_TempMax
+run_uuid: 7cede12bb7c444eeba2cdd3e6845fa46
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1770570401395
+status: 3
+tags: []
+user_id: Chris

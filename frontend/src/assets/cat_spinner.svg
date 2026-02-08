@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" stroke="#38bdf8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Body forming a circle -->
+  <path d="M 50, 10 
+           A 40 40 0 1 1 20, 70" />
+  <!-- Head -->
+  <circle cx="50" cy="10" r="8" fill="#0f172a" />
+  <!-- Ears -->
+  <path d="M 44,4 L 42,-6 L 48,2" />
+  <path d="M 56,4 L 58,-6 L 52,2" />
+  <!-- Tail -->
+  <path d="M 20,70 Q 10,80 25,85" />
+</svg>

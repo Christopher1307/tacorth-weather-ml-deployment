@@ -1,0 +1,43 @@
+artifact_path: model
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.12.3
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.5.1
+mlflow_version: 2.15.1
+model_size_bytes: 4424
+model_uuid: bd8b0d87367c423798253cff1a1ac152
+run_id: 7cede12bb7c444eeba2cdd3e6845fa46
+saved_input_example_info:
+  artifact_path: input_example.json
+  pandas_orient: split
+  serving_input_path: serving_input_payload.json
+  type: dataframe
+signature:
+  inputs: '[{"type": "double", "name": "hum_maximo", "required": true}, {"type": "double",
+    "name": "hum_media", "required": true}, {"type": "double", "name": "hum_minimo",
+    "required": true}, {"type": "double", "name": "rad_maximo", "required": true},
+    {"type": "double", "name": "rad_total", "required": true}, {"type": "double",
+    "name": "rain_total", "required": true}, {"type": "double", "name": "temp_media",
+    "required": true}, {"type": "double", "name": "temp_minimo", "required": true},
+    {"type": "double", "name": "wsp_maximo", "required": true}, {"type": "double",
+    "name": "wsp_media", "required": true}, {"type": "double", "name": "wsp_minimo",
+    "required": true}, {"type": "long", "name": "anio", "required": true}, {"type":
+    "long", "name": "mes", "required": true}, {"type": "long", "name": "dia", "required":
+    true}, {"type": "long", "name": "dia_semana", "required": true}, {"type": "long",
+    "name": "dia_del_anyo", "required": true}, {"type": "boolean", "name": "estacion_invierno",
+    "required": true}, {"type": "boolean", "name": "estacion_otono", "required": true},
+    {"type": "boolean", "name": "estacion_primavera", "required": true}, {"type":
+    "boolean", "name": "estacion_verano", "required": true}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "float64", "shape": [-1]}}]'
+  params: null
+utc_time_created: '2026-02-08 17:06:41.467155'

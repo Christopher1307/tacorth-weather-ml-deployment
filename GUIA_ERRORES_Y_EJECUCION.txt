@@ -1,0 +1,61 @@
+GUÍA RÁPIDA DE EJECUCIÓN Y SOLUCIÓN DE ERRORES - TACORONTE AI
+============================================================
+
+1. CÓMO EJECUTAR EL PROYECTO (PASO A PASO)
+------------------------------------------
+Necesitas abrir DOS terminales diferentes.
+
+TERMINAL 1: BACKEND (API)
+-------------------------
+1. Abre una terminal (PowerShell o CMD) en la carpeta del proyecto.
+2. Activa el entorno virtual (IMPORTANTE):
+   > .\.venv\Scripts\Activate
+   (Debe aparecer "(.venv)" al principio de la línea)
+3. Ejecuta el servidor:
+   > uvicorn app.main:app --reload
+
+   Si todo va bien verás: "Uvicorn running on http://127.0.0.1:8000"
+
+TERMINAL 2: FRONTEND (WEB)
+--------------------------
+1. Abre OTRA terminal y ve a la carpeta 'frontend':
+   > cd frontend
+2. Ejecuta el servidor web:
+   > npm run dev
+
+   Si todo va bien verás: "Local: http://localhost:5173/"
+3. Abre esa dirección en tu navegador.
+
+
+2. ERRORES COMUNES Y SOLUCIONES
+-------------------------------
+
+ERROR 1: "uvicorn : El término 'uvicorn' no se reconoce..."
+-----------------------------------------------------------
+- Causa: No has activado el entorno virtual.
+- Solución: Ejecuta siempre `.\.venv\Scripts\Activate` antes de lanzar `uvicorn`.
+
+ERROR 2: "net::ERR_CONNECTION_REFUSED"
+--------------------------------------
+- Causa: El backend (API) está apagado o fallando.
+- Solución: Verifica la Terminal 1. Si se ha cerrado, vuelve a ejecutar `uvicorn app.main:app --reload`.
+
+ERROR 3: "AxiosError: timeout of 60000ms exceeded"
+--------------------------------------------------
+- Causa: El frontend intenta conectar al puerto 10000 (Render) en lugar del 8000 (Local).
+- Solución: Asegúrate de que el archivo `frontend/.env` tenga:
+  VITE_API_URL=http://127.0.0.1:8000
+
+ERROR 4: "CORS policy: No 'Access-Control-Allow-Origin' header..."
+------------------------------------------------------------------
+- Causa: La API no permite conexiones desde la web por seguridad.
+- Solución: En `app/main.py`, asegurar que está añadido `CORSMiddleware` (ya lo hemos arreglado).
+
+ERROR 5: "503 Service Unavailable: Registered Model ... not found"
+------------------------------------------------------------------
+- Causa: No existe ningún modelo entrenado en tu máquina local.
+- Solución:
+  1. Detén el servidor uvicorn (Ctrl+C).
+  2. Ejecuta el entrenamiento: `python train_and_log_mlflow.py`
+  3. Copia el ID del run (ej. "runs:/7cede.../model") y ponlo en `app/main.py` (variable MODEL_URI).
+  4. Vuelve a arrancar uvicorn.

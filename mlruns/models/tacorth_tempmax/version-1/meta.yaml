@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1770570404595
+current_stage: None
+description: null
+last_updated_timestamp: 1770570404595
+name: tacorth_tempmax
+run_id: 7cede12bb7c444eeba2cdd3e6845fa46
+run_link: null
+source: file:///C:/Users/Chris/Downloads/ETAPA6_FastAPI_MLflow_Render_Tacorth/mlruns/429690843168573320/7cede12bb7c444eeba2cdd3e6845fa46/artifacts/model
+status: READY
+status_message: null
+storage_location: file:///C:/Users/Chris/Downloads/ETAPA6_FastAPI_MLflow_Render_Tacorth/mlruns/429690843168573320/7cede12bb7c444eeba2cdd3e6845fa46/artifacts/model
+user_id: null
+version: 1

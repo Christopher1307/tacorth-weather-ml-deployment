@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 import mlflow.pyfunc
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 APP_NAME = "tacorth-tempmax-api"
@@ -48,7 +49,17 @@ app = FastAPI(
     description="API REST (FastAPI) para predecir temp_maximo (°C) con un modelo registrado en MLflow.",
 )
 
-MODEL_URI = os.getenv("MODEL_URI", "models:/tacorth_tempmax/Production")
+# Configurar CORS para permitir peticiones desde el frontend (React)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # O especifica ["http://localhost:5173"] para mayor seguridad
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Usamos la URI del run que acabas de generar
+MODEL_URI = os.getenv("MODEL_URI", "runs:/7cede12bb7c444eeba2cdd3e6845fa46/model")
 
 _model = None
 _model_error: Optional[str] = None

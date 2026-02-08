@@ -1,0 +1,50 @@
+{
+  "dataframe_split": {
+    "columns": [
+      "hum_maximo",
+      "hum_media",
+      "hum_minimo",
+      "rad_maximo",
+      "rad_total",
+      "rain_total",
+      "temp_media",
+      "temp_minimo",
+      "wsp_maximo",
+      "wsp_media",
+      "wsp_minimo",
+      "anio",
+      "mes",
+      "dia",
+      "dia_semana",
+      "dia_del_anyo",
+      "estacion_invierno",
+      "estacion_otono",
+      "estacion_primavera",
+      "estacion_verano"
+    ],
+    "data": [
+      [
+        99.4,
+        87.03125,
+        67.8,
+        1014.5,
+        30536.2,
+        0.0,
+        17.419445,
+        15.0,
+        3.0,
+        1.61875,
+        0.5,
+        2025,
+        7,
+        13,
+        6,
+        194,
+        false,
+        false,
+        false,
+        true
+      ]
+    ]
+  }
+}

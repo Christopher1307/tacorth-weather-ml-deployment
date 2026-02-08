@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" stroke="#fbbf24" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Center -->
+  <circle cx="50" cy="50" r="20" fill="#f59e0b" fill-opacity="0.3" />
+  
+  <!-- Rays -->
+  <path d="M50 15V5M50 95v-10M15 50H5M95 50h-10M25.25 25.25l-7.07-7.07M81.82 81.82l-7.07-7.07M25.25 74.75l-7.07 7.07M81.82 18.18l-7.07 7.07" />
+</svg>

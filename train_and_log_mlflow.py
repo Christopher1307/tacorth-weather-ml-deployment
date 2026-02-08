@@ -24,7 +24,9 @@ REGISTERED_MODEL_NAME = os.getenv("REGISTERED_MODEL_NAME", "tacorth_tempmax")
 #   DATABRICKS_HOST=...
 #   DATABRICKS_TOKEN=...
 # Alternativa: usar un tracking server local (MLFLOW_TRACKING_URI=http://127.0.0.1:5000)
-TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI", "databricks")
+# Alternativa: usar un tracking server local (MLFLOW_TRACKING_URI=http://127.0.0.1:5000) o archivos locales
+# Para desarrollo local y evitar errores, usaremos la ruta local por defecto (./mlruns)
+TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI", "file:./mlruns")
 mlflow.set_tracking_uri(TRACKING_URI)
 
 
