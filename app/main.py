@@ -1,6 +1,6 @@
 import os
 from datetime import date, datetime
-from typing import Literal, Optional, Dict, Any
+from typing import Optional, Dict, Any
 
 import numpy as np
 import pandas as pd
@@ -20,10 +20,8 @@ def season_from_month(m: int) -> str:
     return "otono"
 
 class PredictRequest(BaseModel):
-    # Fecha (para generar variables calendario y estación)
     fecha_observacion: date = Field(..., description="Fecha de la observación (YYYY-MM-DD)")
 
-    # Variables meteorológicas (sensores)
     hum_maximo: float
     hum_media: float
     hum_minimo: float
@@ -64,10 +62,12 @@ def build_features(req: PredictRequest) -> pd.DataFrame:
     dia_del_anyo = int(datetime(dt.year, dt.month, dt.day).strftime("%j"))
 
     est = season_from_month(mes)
-    estacion_invierno = 1 if est == "invierno" else 0
-    estacion_primavera = 1 if est == "primavera" else 0
-    estacion_verano = 1 if est == "verano" else 0
-    estacion_otono = 1 if est == "otono" else 0
+
+    # IMPORTANTE: el modelo espera boolean (no 0/1 int)
+    estacion_invierno = (est == "invierno")
+    estacion_primavera = (est == "primavera")
+    estacion_verano = (est == "verano")
+    estacion_otono = (est == "otono")
 
     row = {
         "hum_maximo": req.hum_maximo,
@@ -92,7 +92,6 @@ def build_features(req: PredictRequest) -> pd.DataFrame:
         "estacion_verano": estacion_verano,
     }
 
-    # Orden esperado por el modelo (coincide con dataset_limpio.csv sin fecha_observacion ni temp_maximo)
     ordered_cols = [
         "hum_maximo","hum_media","hum_minimo",
         "rad_maximo","rad_total","rain_total",
@@ -101,7 +100,29 @@ def build_features(req: PredictRequest) -> pd.DataFrame:
         "anio","mes","dia","dia_semana","dia_del_anyo",
         "estacion_invierno","estacion_otono","estacion_primavera","estacion_verano"
     ]
-    return pd.DataFrame([[row[c] for c in ordered_cols]], columns=ordered_cols)
+
+    df = pd.DataFrame([[row[c] for c in ordered_cols]], columns=ordered_cols)
+
+    # Forzar dtypes exactamente como los espera MLflow (evita el error int64 -> bool)
+    FLOAT_COLS = [
+        "hum_maximo","hum_media","hum_minimo",
+        "rad_maximo","rad_total","rain_total",
+        "temp_media","temp_minimo",
+        "wsp_maximo","wsp_media","wsp_minimo",
+    ]
+    INT_COLS = ["anio", "mes", "dia", "dia_semana", "dia_del_anyo"]
+    BOOL_COLS = ["estacion_invierno", "estacion_otono", "estacion_primavera", "estacion_verano"]
+
+    for c in FLOAT_COLS:
+        df[c] = df[c].astype(float)
+
+    for c in INT_COLS:
+        df[c] = df[c].astype(int)
+
+    for c in BOOL_COLS:
+        df[c] = df[c].astype(bool)
+
+    return df
 
 @app.on_event("startup")
 def load_model() -> None:
@@ -113,6 +134,10 @@ def load_model() -> None:
         _model = None
         _model_error = f"{type(e).__name__}: {e}"
 
+@app.get("/")
+def root() -> Dict[str, Any]:
+    return {"status": "ok", "docs": "/docs", "health": "/health", "model_uri": MODEL_URI}
+
 @app.get("/health")
 def health() -> Dict[str, Any]:
     if _model is None:
@@ -122,16 +147,21 @@ def health() -> Dict[str, Any]:
 @app.post("/predict", response_model=PredictResponse)
 def predict(req: PredictRequest) -> PredictResponse:
     if _model is None:
-        raise HTTPException(status_code=503, detail={"status": "ko", "error": _model_error, "model_uri": MODEL_URI})
+        raise HTTPException(
+            status_code=503,
+            detail={"status": "ko", "error": _model_error, "model_uri": MODEL_URI},
+        )
 
     X = build_features(req)
+
     try:
         y_pred = _model.predict(X)
-        # pyfunc puede devolver np.ndarray o pd.Series
         if isinstance(y_pred, (list, tuple, np.ndarray)):
             pred_val = float(np.array(y_pred).ravel()[0])
         else:
             pred_val = float(y_pred.iloc[0])
+
         return PredictResponse(temp_maximo_pred=pred_val, model_uri=MODEL_URI)
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"{type(e).__name__}: {e}")
